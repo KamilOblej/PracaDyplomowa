@@ -51,7 +51,7 @@ def save_thermo():
 
 def face_recognition(item):
     face_cascade = cv2.CascadeClassifier(
-        'helloDjango/haarcascade_frontalface_default.xml')
+        'camera/haarcascade_frontalface_default.xml')
     gray = cv2.cvtColor(item, cv2.COLOR_BGR2GRAY)
     image = copy.copy(item)
 
