@@ -25,12 +25,13 @@ SECRET_KEY = '++impu7r8ir=0$01eqe=7(-&d(%wppc+54&9j*15n(dclnrw8s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'camera',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
