@@ -196,6 +196,8 @@ def test(request):
 def photos_history(request):
     photos = Photo.objects.all()
     message = 'Photos not found '
+
+    print(photos[1].name)
     
 
     template = "history.html"
