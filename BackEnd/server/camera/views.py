@@ -20,7 +20,8 @@ from . photo import takePhotos
 from . camera import VideoCamera
 from . thermoSnapshot import thermo
 
-from . models import Photo
+from . models import Photo, Thermo
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -195,15 +196,35 @@ def test(request):
 
 def photos_history(request):
     photos = Photo.objects.all()
+<<<<<<< HEAD
     message = 'Photos not found '
 
     print(photos[1].name)
+=======
+    thermos = Thermo.objects.all()
+    message = 'Photos from database'
+    items = len(photos) 
+
+    paginator = Paginator(photos, 30)
+
+    page = request.GET.get('page')
+
+    photos = paginator.get_page(page)
+    thermos = paginator.get_page(page)
+
+    # ?page=2
+
+    # photos = paginator.get_page(page)
+
+>>>>>>> 6c3311c81df36ad61e29f1b9149edded69abf4de
     
 
     template = "history.html"
     context = {
         'message' : message,
-        'photos' : photos
+        'items' : items,
+        'photos' : photos,
+        'thermos' : thermos, 
     }
 
     return render(request, template, context)
