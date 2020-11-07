@@ -8,11 +8,21 @@
 </head>
 
 <body>
+    {% if messages %}
+      <h1>{{ message }}</h1>
+    {% endif %}
     
     {% for photo in photos %}
     <div>
         <p>{{photo.name}}</p>
-        <img src="{{photo.url}}" alt="">
+        <img src="{{ photo.image.url }}" alt="">
     </div>
-    {% endfor %}    
+    {% endfor %}   
+
+    {% for thermo in thermos %}
+    <div>
+            <p>{{thermo.name}}</p>
+            <img src="{{ thermo.image.url }}" alt="">
+        </div>
+    {% endfor %} 
 </body>
