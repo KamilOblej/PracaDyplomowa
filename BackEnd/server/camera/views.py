@@ -195,35 +195,29 @@ def test(request):
     return redirect('take_one_photo')
 
 def photos_history(request):
-    photos = Photo.objects.all()
-<<<<<<< HEAD
-    message = 'Photos not found '
-
-    print(photos[1].name)
-=======
+    # photos = Photo.objects.all()
     thermos = Thermo.objects.all()
     message = 'Photos from database'
-    items = len(photos) 
+    # items = len(photos) 
 
-    paginator = Paginator(photos, 30)
+    # paginator = Paginator(photos, 30)
 
-    page = request.GET.get('page')
+    # page = request.GET.get('page')
 
-    photos = paginator.get_page(page)
-    thermos = paginator.get_page(page)
+    # photos = paginator.get_page(page)
+    # thermos = paginator.get_page(page)
 
     # ?page=2
 
     # photos = paginator.get_page(page)
 
->>>>>>> 6c3311c81df36ad61e29f1b9149edded69abf4de
     
 
     template = "history.html"
     context = {
         'message' : message,
-        'items' : items,
-        'photos' : photos,
+        # 'items' : items,
+        # 'photos' : photos,
         'thermos' : thermos, 
     }
 
