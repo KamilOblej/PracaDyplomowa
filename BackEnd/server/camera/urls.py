@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^stream/$', views.indexscreen, name='stream'),
     path('webcam_feed', views.webcam_feed, name='webcam_feed'),
     path('thermal_feed', views.thermal_feed, name='thermal_feed'),
+    path('history/',views.photos_history, name='history'),
 ]

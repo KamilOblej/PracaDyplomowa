@@ -20,6 +20,8 @@ from . photo import takePhotos
 from . camera import VideoCamera
 from . thermoSnapshot import thermo
 
+from . models import Photo
+
 
 def index(request):
     temperatures = getTemperature()
@@ -190,3 +192,16 @@ def take_photos_sequence(request):
 
 def test(request):
     return redirect('take_one_photo')
+
+def photos_history(request):
+    photos = Photo.objects.all()
+    message = 'Photos not found '
+    
+
+    template = "history.html"
+    context = {
+        'message' : message,
+        'photos' : photos
+    }
+
+    return render(request, template, context)
