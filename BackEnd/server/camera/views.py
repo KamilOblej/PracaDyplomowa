@@ -20,7 +20,7 @@ from . photo import takePhotos
 from . camera import VideoCamera
 from . thermoSnapshot import thermo
 
-from . models import Photo, Thermo
+from . models import Photo, Thermo, Temperature
 from django.core.paginator import Paginator
 
 
@@ -195,16 +195,37 @@ def test(request):
     return redirect('take_one_photo')
 
 def photos_history(request):
-    # photos = Photo.objects.all()
+    items = len(Photo.objects.all())
+    photos = Photo.objects.all()
     thermos = Thermo.objects.all()
+    temperature = Temperature.objects.all()
     message = 'Photos from database'
+
+    data_set = []
+    
+    for i in range(items -1):
+        # print (photos[i].name, thermos[i].name,)
+        data = {
+            'photo_name' : photos[i].name,
+            'photo_image' : photos[i].image,
+            'thermo_image' : thermos[i].image,
+            'temp1' : temperature[i].temperature1,
+            'temp2' : temperature[i].temperature2,
+        }
+        data_set.append(data)
+
+    # print(data_set)
+
+    
+
+    
     # items = len(photos) 
 
-    # paginator = Paginator(photos, 30)
+    paginator = Paginator(data_set, 10)
 
-    # page = request.GET.get('page')
+    page = request.GET.get('page')
 
-    # photos = paginator.get_page(page)
+    data_set = paginator.get_page(page)
     # thermos = paginator.get_page(page)
 
     # ?page=2
@@ -216,9 +237,10 @@ def photos_history(request):
     template = "history.html"
     context = {
         'message' : message,
+        'data_set' : data_set,
         # 'items' : items,
         # 'photos' : photos,
-        'thermos' : thermos, 
+        # 'thermos' : thermos, 
     }
 
     return render(request, template, context)
