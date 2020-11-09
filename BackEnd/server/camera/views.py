@@ -198,7 +198,7 @@ def photos_history(request):
     items = len(Photo.objects.all())
     photos = Photo.objects.all()
     thermos = Thermo.objects.all()
-    temperature = Temperature.objects.all()
+    temperatures = Temperature.objects.all()
     message = 'Photos from database'
 
     data_set = []
@@ -206,11 +206,9 @@ def photos_history(request):
     for i in range(items -1):
         # print (photos[i].name, thermos[i].name,)
         data = {
-            'photo_name' : photos[i].name,
-            'photo_image' : photos[i].image,
-            'thermo_image' : thermos[i].image,
-            'temp1' : temperature[i].temperature1,
-            'temp2' : temperature[i].temperature2,
+            'photo' : photos[i],
+            'thermo' : thermos[i],
+            'temperature' : temperatures[i]
         }
         data_set.append(data)
 
@@ -221,26 +219,19 @@ def photos_history(request):
     
     # items = len(photos) 
 
-    paginator = Paginator(data_set, 10)
+    paginator = Paginator(data_set, 30)
 
     page = request.GET.get('page')
 
     data_set = paginator.get_page(page)
-    # thermos = paginator.get_page(page)
 
-    # ?page=2
-
-    # photos = paginator.get_page(page)
 
     
 
     template = "history.html"
     context = {
         'message' : message,
-        'data_set' : data_set,
-        # 'items' : items,
-        # 'photos' : photos,
-        # 'thermos' : thermos, 
+        'data_set' : data_set
     }
 
     return render(request, template, context)
