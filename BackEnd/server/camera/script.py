@@ -32,6 +32,7 @@ def save_image(image):
     photo.save()
 
     thermo(file_path, 'thermo' + file_name, file_format)
+    save_temperature()
 
     print('Photo taken at [' + file_name + ']')
 
@@ -63,6 +64,6 @@ def face_recognition(item):
     found = len(faces)
     if found != 0:
         save_image(image)
-        save_temperature()
+        # save_temperature()
 
     return item
