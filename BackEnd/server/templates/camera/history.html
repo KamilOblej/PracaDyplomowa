@@ -14,10 +14,10 @@
 
     {% for data in data_set  %}
     <div>    
-        <h2>{{ data.photo_name }}</h2>
-        <h2>Temperatures: {{ data.temp1 }}° C, {{ data.temp2 }}° C </h2>
-        <img src=" {{ data.photo_image.url }}" alt="">
-        <img src=" {{ data.thermo_image.url }}" alt="">
+        <h2>Date: {{ data.photo.name }}</h2>
+        <h2>Temperatures: {{ data.temperature.temperature1 }}° C, {{ data.temperature.temperature2 }}° C </h2>
+        <img src=" {{ data.photo.image.url }}" alt="">
+        <img src=" {{ data.thermo.image.url }}" alt="">
         <hr>
     </div>
 
