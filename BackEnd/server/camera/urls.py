@@ -15,6 +15,6 @@ urlpatterns = [
     url(r'^stream/$', views.indexscreen, name='stream'),
     path('webcam_feed', views.webcam_feed, name='webcam_feed'),
     path('thermal_feed', views.thermal_feed, name='thermal_feed'),
-    # path('history/?page=0', views.photos_history, name='history_first'),
+    path('got_to_history/', views.history_first, name='history_first'),
     url(r'^history/$',views.photos_history, name='history'),
 ]

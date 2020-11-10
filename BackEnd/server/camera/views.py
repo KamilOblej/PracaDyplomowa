@@ -195,6 +195,9 @@ def take_photos_sequence(request):
 def test(request):
     return redirect('take_one_photo')
 
+def history_first(request):
+    return redirect('/history/?page=1')
+
 def photos_history(request):
     offset = 30
     if int(request.GET['page']) > 1:
@@ -209,8 +212,6 @@ def photos_history(request):
     thermos = Thermo.objects.all()[start:stop]
     temperatures = Temperature.objects.all()[start:stop]
     message = 'Photos from database:'
-    message += str(start) + str(stop)
-    # message = 'start' + start + 'stop' + stop
 
     data_set = []
     

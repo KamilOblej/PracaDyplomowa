@@ -62,6 +62,5 @@ def face_recognition(item):
     found = len(faces)
     if found != 0:
         save_image(image)
-        # save_temperature()
 
     return item
