@@ -24,7 +24,7 @@
     {% endfor %}
     
 
-    <div class="pagination">
+    <!-- <div class="pagination">
         <span class="step-links">
             {% if data_set.has_previous %}
                 <a href="?page=1">&laquo; 1 </a>
@@ -39,6 +39,13 @@
                 <a href="?page={{ data_set.next_page_number }}">next</a>
                 <a href="?page={{ data_set.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
+        </span>
+    </div> -->
+    <div class="pagination">
+        <span class="step_links">
+            {% for page in pages %}
+              <a href="?page={{ page }}"> {{ page }}</a>
+            {% endfor %}
         </span>
     </div>
         <a href="{% url 'index' %}"><button>Home</button> </a>

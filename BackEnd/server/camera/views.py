@@ -14,6 +14,7 @@ from django.views.decorators import gzip
 import cv2
 import time
 from .script import face_recognition
+import math
 
 from . photo import takePhotos
 
@@ -195,15 +196,25 @@ def test(request):
     return redirect('take_one_photo')
 
 def photos_history(request):
-    items = len(Photo.objects.all())
-    photos = Photo.objects.all()
-    thermos = Thermo.objects.all()
-    temperatures = Temperature.objects.all()
-    message = 'Photos from database'
+    offset = 30
+    if int(request.GET['page']) > 1:
+        start = int(request.GET['page']) * offset - offset
+    else:
+        start = 0
+    
+    stop = start + offset
+
+    # items = len(Photo.objects.all()[:offset])
+    photos = Photo.objects.all()[start:stop]
+    thermos = Thermo.objects.all()[start:stop]
+    temperatures = Temperature.objects.all()[start:stop]
+    message = 'Photos from database:'
+    message += str(start) + str(stop)
+    # message = 'start' + start + 'stop' + stop
 
     data_set = []
     
-    for i in range(items -1):
+    for i in range(0,offset):
         # print (photos[i].name, thermos[i].name,)
         data = {
             'photo' : photos[i],
@@ -211,27 +222,27 @@ def photos_history(request):
             'temperature' : temperatures[i]
         }
         data_set.append(data)
-
-    # print(data_set)
-
     
+    pages = []
 
-    
-    # items = len(photos) 
-
-    paginator = Paginator(data_set, 30)
-
-    page = request.GET.get('page')
-
-    data_set = paginator.get_page(page)
+    for page in  range( 1,math.ceil(len(Photo.objects.all()) / offset)):
+        pages.append(page)
 
 
-    
+
+    # paginator = Paginator(data_set, 3)
+
+    # page = request.GET.get('page')
+
+    # data_set = paginator.get_page(page)
 
     template = "history.html"
     context = {
         'message' : message,
-        'data_set' : data_set
+        'data_set' : data_set,
+        'pages' : pages,
     }
+    # print(pages)
+    # sleep(10)
 
     return render(request, template, context)

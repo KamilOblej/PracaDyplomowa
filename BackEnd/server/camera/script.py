@@ -46,8 +46,6 @@ def save_temperature():
     temperature.save()
 
 
-def save_thermo():
-    pass
 
 
 def face_recognition(item):
