@@ -199,7 +199,7 @@ def history_first(request):
     return redirect('/history/?page=1')
 
 def photos_history(request):
-    offset = 30
+    offset = 10
     if int(request.GET['page']) > 1:
         start = int(request.GET['page']) * offset - offset
     else:
@@ -225,6 +225,10 @@ def photos_history(request):
         data_set.append(data)
     
     pages = []
+    print(len(Photo.objects.all()))
+    print(len(Photo.objects.all()) / offset)
+    print(math.ceil(len(Photo.objects.all()) / offset))
+
 
     for page in  range( 1,math.ceil(len(Photo.objects.all()) / offset)):
         pages.append(page)

@@ -9,6 +9,3 @@ def getTemperature():
         temperature.append(sensor.get_temperature())
     return temperature
 
-
-t = getTemperature()
-print(t)

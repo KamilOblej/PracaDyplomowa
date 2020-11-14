@@ -14,7 +14,7 @@
 
     {% for data in data_set  %}
     <div>    
-        <h2>Date: {{ data.photo.name }}</h2>
+        <h2>Date: {{ data.photo.date_taken|date:"d M Y H:i:s"}}</h2>
         <h2>Temperatures: {{ data.temperature.temperature1 }}° C, {{ data.temperature.temperature2 }}° C </h2>
         <img src=" {{ data.photo.image.url }}" alt="">
         <img src=" {{ data.thermo.image.url }}" alt="">
@@ -23,24 +23,6 @@
 
     {% endfor %}
     
-
-    <!-- <div class="pagination">
-        <span class="step-links">
-            {% if data_set.has_previous %}
-                <a href="?page=1">&laquo; 1 </a>
-                <a href="?page={{ data_set.previous_page_number }}"> prev </a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ data_set.number }} of {{ data_set.paginator.num_pages }}
-            </span>
-    
-            {% if data_set.has_next %}
-                <a href="?page={{ data_set.next_page_number }}">next</a>
-                <a href="?page={{ data_set.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div> -->
     <div class="pagination">
         <span class="step_links">
             {% for page in pages %}
