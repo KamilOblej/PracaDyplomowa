@@ -13,7 +13,7 @@
     {% endif %}
 
     <form method="GET">
-
+        [Date format yyyy-mm-dd hh:mm:ss]
         {{ my_filter.form.as_p }}
 
         <button class="btn btn-primary" type="submit">Search</button>
@@ -22,8 +22,9 @@
 
     {% for data in data_set  %}
     <div>    
-        <h2>Date: {{ data.photo.date_taken|date:"d M Y H:i:s"}}</h2>
-        <h2>Temperatures: {{ data.temperature.temperature1 }}° C, {{ data.temperature.temperature2 }}° C </h2>
+        <h4>{{ data.photo.id }} ) Date: {{ data.photo.date_taken|date:"d M Y H:i:s"}}</h4>
+        <h4>Temperatures: {{ data.temperature.temperature1 }}° C, {{ data.temperature.temperature2 }}° C </h4>
+        
         <img src=" {{ data.photo.image.url }}" alt="">
         <img src=" {{ data.thermo.image.url }}" alt="">
         <hr>
@@ -34,7 +35,7 @@
     <div class="pagination">
         <span class="step_links">
             {% for page in pages %}
-              <a href="?start_date={{request.GET.start_date}}&page={{ page }}"> {{ page }}</a>
+              <a href="?start_date_after={{request.GET.start_date_after}}&start_date_before={{request.GET.start_date_before}}&page={{ page }}"> {{ page }}</a>
             {% endfor %}
         </span>
     </div>

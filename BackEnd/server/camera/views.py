@@ -142,9 +142,9 @@ def photos_history(request):
         # print(data['temperature'])
 
     if not data_set:
-        message = 'No data for this period'
+        message = 'No data for this date period'
     else:
-        message = 'Found ' + str(photos.count()) + ' elements'
+        message =  str(photos.count()) + ' elements found'
     
     # for i in range(0,offset):
     #     # print (photos[i].name, thermos[i].name,)

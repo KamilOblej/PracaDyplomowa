@@ -1,10 +1,10 @@
 import django_filters
-from django_filters import DateRangeFilter
+from django_filters import DateRangeFilter, DateTimeFromToRangeFilter
 
 from .models import Photo
 
 class PhotosFilter(django_filters.FilterSet):
-    start_date = DateRangeFilter(field_name='date_taken')
+    start_date = DateTimeFromToRangeFilter(field_name='date_taken')
 
 
     class Meta:
