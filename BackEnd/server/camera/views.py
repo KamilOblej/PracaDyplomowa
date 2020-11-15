@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect
 from picamera import PiCamera
 from . getTemperature import getTemperature
-from . models import Data
 import numpy as np
-from datetime import datetime, date
 import datetime
 from time import sleep
 from pylepton import Lepton
@@ -15,14 +13,10 @@ import cv2
 import time
 from .script import face_recognition
 import math
-
-from . photo import takePhotos
-
 from . camera import VideoCamera
 from . thermoSnapshot import thermo
-
 from . models import Photo, Thermo, Temperature
-from django.core.paginator import Paginator
+from .filters import PhotosFilter
 
 
 def index(request):
@@ -74,9 +68,9 @@ def webcam_feed(request):
                                  content_type='multipart/x-mixed-replace; boundary=frame')
 
 
-def thermal_feed(request):
-    return StreamingHttpResponse(gen(ThermalCamera()),
-                                 content_type='multipart/x-mixed-replace; boundary=frame')
+# def thermal_feed(request):
+#     return StreamingHttpResponse(gen(ThermalCamera()),
+#                                  content_type='multipart/x-mixed-replace; boundary=frame')
 
 
 def indexscreen(request):
@@ -86,11 +80,6 @@ def indexscreen(request):
     }
     template = "stream.html"
     return render(request, template, context)
-    # try:
-    #     template = "stream.html"
-    #     return render(request, template, context)
-    # except HttpResponseServerError:
-    #     print("error")
 
 
 @gzip.gzip_page
@@ -101,153 +90,90 @@ def dynamic_stream(request, stream_path="video"):
         return "error"
 
 
-def take_one_photo(request):
-    temperatures = getTemperature()
-    camera = PiCamera()
-    data = Data()
-
-    # remove old preview from database
-    preview = Data.objects.all()
-    preview.delete()
-
-    file_path = 'static/images/'
-    file_name = 'preview.png'
-    data.name = file_name
-    data.temperature1 = temperatures[0]
-    data.temperature2 = temperatures[1]
-    print('Camera is working')
-    camera.resolution = (1024, 768)
-    camera.start_preview()
-    camera.capture(file_path + file_name)
-    data.photo = file_name
-    print('Photo taken')
-    data.save()
-
-    d = Data.objects.all()
-    context = {
-        'pictures': d
-    }
-    # print(context['pictures'])
-    camera.close()
-
-    return render(request, 'photo_preview.html', context)
-
-
-def get_data(request):
-    # return render(request, 'get_data.html')
-    return redirect('take_photos_sequence')
-    # takePhotos()
-
-
-def take_photos_sequence(request):
-
-    # render()
-    get_data(request)
-    # remove old preview from database
-    preview = Data.objects.all()
-    preview.delete()
-
-    now = datetime.datetime.now()
-    print('START TIME ' + str(now.hour) + ':' +
-          str(now.minute) + ':' + str(now.second))
-    start_h = now.hour
-    start_m = now.minute
-    start_s = now.second
-
-    WAIT_TIME = 1
-    DELTA_TIME = 1
-
-    file_path = 'static/images/'
-    file_format = '.jpg'
-
-    camera = PiCamera()
-    camera.start_preview()
-
-    # camera need some time to set exposition
-    print('CAMERA CALIBRATION')
-    sleep(WAIT_TIME)
-    print('CAMERA CALIBRATED\n')
-
-    current_second = now.second
-    current_minute = now.minute
-    current_hour = now.hour
-
-    second_counter = 0
-    seconds_in_minute = 10
-    minutes = 1
-
-    while (second_counter < minutes * seconds_in_minute):
-
-        takePhotos(camera, file_path, file_format, file_path)
-        second_counter = second_counter + 2
-        print(second_counter)
-
-    camera.close()
-
-    message = 'System finished recording data'
-
-    context = {
-        'message': message,
-    }
-    return render(request, 'index.html', context)
-
-
-def test(request):
-    return redirect('take_one_photo')
-
 def history_first(request):
-    return redirect('/history/?page=1')
+    return redirect('/history/?page=1&start_date=today')
 
 def photos_history(request):
-    offset = 10
-    if int(request.GET['page']) > 1:
+
+
+    photos = Photo.objects.all()
+    items = photos.count()
+    # temperatures = Temperature.objects.all()
+    title = 'Photos from database:'
+    message = ''
+
+    my_filter = PhotosFilter(request.GET, queryset=photos)
+    photos = my_filter.qs
+    # print(photos.count())
+
+    offset = 30
+    
+    try:
+        page_nr = int(request.GET['page'])
+    except:
+        page_nr = 1
+    # if int(request.GET['page']):
+    #     page_nr = int(request.GET['page'])
+
+
+    if page_nr > 1:
         start = int(request.GET['page']) * offset - offset
     else:
         start = 0
     
     stop = start + offset
 
-    # items = len(Photo.objects.all()[:offset])
-    photos = Photo.objects.all()[start:stop]
-    thermos = Thermo.objects.all()[start:stop]
-    temperatures = Temperature.objects.all()[start:stop]
-    message = 'Photos from database:'
+    if stop > items:
+        stop = items
+
+    photos2 = photos[start:stop]
+    # thermos = Thermo.objects.all()[start:stop]
+    # temperatures = Temperature.objects.all()[start:stop]
 
     data_set = []
-    
-    for i in range(0,offset):
-        # print (photos[i].name, thermos[i].name,)
+
+    for photo in photos2:
         data = {
-            'photo' : photos[i],
-            'thermo' : thermos[i],
-            'temperature' : temperatures[i]
+            'photo' : photo,
+            'temperature' : Temperature.objects.get(pk=photo.pk),
+            'thermo' : Thermo.objects.get(pk=photo.pk)
         }
         data_set.append(data)
+        # print(data['temperature'])
+
+    if not data_set:
+        message = 'No data for this period'
+    else:
+        message = 'Found ' + str(photos.count()) + ' elements'
+    
+    # for i in range(0,offset):
+    #     # print (photos[i].name, thermos[i].name,)
+    #     data = {
+    #         'photo' : photos[i],
+    #         # 'thermo' : thermos[i],
+    #         # 'temperature' : temperatures[i],
+            
+    #     }
+    #     data_set.append(data)
     
     pages = []
-    print(len(Photo.objects.all()))
-    print(len(Photo.objects.all()) / offset)
-    print(math.ceil(len(Photo.objects.all()) / offset))
 
-
-    for page in  range( 1,math.ceil(len(Photo.objects.all()) / offset)):
+    for page in  range( 1,math.ceil(photos.count() / offset) + 1):
         pages.append(page)
 
 
-
-    # paginator = Paginator(data_set, 3)
-
-    # page = request.GET.get('page')
-
-    # data_set = paginator.get_page(page)
-
     template = "history.html"
     context = {
+        'title' : title,
         'message' : message,
         'data_set' : data_set,
         'pages' : pages,
+        'my_filter' : my_filter,
     }
-    # print(pages)
-    # sleep(10)
+
 
     return render(request, template, context)
+
+
+
+
