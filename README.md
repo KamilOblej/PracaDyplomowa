@@ -7,6 +7,7 @@
      - Paginacja,
      - Filtrowanie wg daty i godziny,
    - Odczyt temperatury z zewnętrznych czujników,
+   - REST API
    - Wykorzystanie wbudowanego panelu administratora Django,
  - FrontEnd (kod interfejsu użytkownika)
  - Processing (kod przetwarzania obrazów z kamer)
