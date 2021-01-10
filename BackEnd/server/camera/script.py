@@ -29,7 +29,6 @@ def save_image(image):
 
     thermo(file_path, 'thermo' + file_name, file_format)
     save_temperature()
-    print(photo.pk)
 
     print('Photo taken at [' + photo.date_taken + ']')
 
