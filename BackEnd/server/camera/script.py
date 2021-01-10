@@ -20,10 +20,6 @@ def save_image(image):
     file_name = ''+today + current_time
     pathPhoto = file_path + file_name + file_format
 
-    # now = datetime.datetime.now()
-    # file_name = 'img/foto' + \
-    #     str(now.minute) + str(now.second) + str(now.microsecond) + file_format
-    # cv2.imwrite(file_name, image)
     cv2.imwrite(pathPhoto, image)
 
     photo = Photo()
