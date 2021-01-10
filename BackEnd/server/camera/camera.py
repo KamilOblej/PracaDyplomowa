@@ -4,10 +4,6 @@ from pylepton import Lepton
 import copy
 from . script import face_recognition
 
-face_cascade = cv2.CascadeClassifier(
-    'helloDjango/haarcascade_frontalface_default.xml')
-
-
 class VideoCamera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
