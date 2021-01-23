@@ -30,19 +30,16 @@ class TemperatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Temperature
         fields = '__all__'
-        # exclude = ['date_taken']
 
 class ThermoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thermo
-        # exclude = ['name']
         fields = '__all__'
 
 class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        # exclude = ['name']
         fields = '__all__'
 
 
