@@ -4,6 +4,9 @@ from .serializers import RegisterSerializer, UserSerializer
 from camera.models import Photo, Thermo, Temperature
 from .serializers import PhotoSerializer, ThermoSerializer, TemperatureSerializer
 from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
 #Register API
 class RegisterApi(generics.GenericAPIView):
@@ -17,9 +20,16 @@ class RegisterApi(generics.GenericAPIView):
             "message": "User Created Successfully.  Now perform Login to get your token",
         })
 
+class SimpleApI(APIView):
+    permission_classes = (IsAuthenticated,)
+    def get(self, request):
+        content = {'message': 'Hello, World!'}
+        return Response(content)
+
 
 class GetData(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
+        print(request.user)
         photos = Photo.objects.all()
         photos_serializer = PhotoSerializer(photos, many=True)
 
