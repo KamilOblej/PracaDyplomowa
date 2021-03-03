@@ -1,4 +1,5 @@
 from django.db import models
+# from matrix_field import MatrixField
 
 # Create your models here.
 
@@ -11,7 +12,7 @@ class Photo(models.Model):
     date_taken = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return self.name
+        return str(self.pk)+ ' ) ' +str(self.name)
 
 
 class Thermo(models.Model):
@@ -19,9 +20,10 @@ class Thermo(models.Model):
     name = models.CharField(max_length=200)
     image = models.ImageField()
     date_taken = models.DateTimeField(auto_now_add=True, null=True)
+    # raw_matrix = models.ma
 
     def __str__(self):
-        return self.name
+        return str(self.pk)+ ' ) ' +str(self.name)
 
 
 class Temperature(models.Model):
@@ -31,4 +33,4 @@ class Temperature(models.Model):
     date_taken = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return str(self.temperature1)+ ' ' +str(self.temperature2)
+        return str(self.pk)+ ' ) ' +str(self.temperature1)+ ' ' +str(self.temperature2) 

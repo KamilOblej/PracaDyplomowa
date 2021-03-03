@@ -62,11 +62,21 @@ def gen(camera):
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+def gen_manual(camera):
+    while True:
+        frame = camera.get_frame_manual()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
 
 def webcam_feed(request):
     return StreamingHttpResponse(gen(VideoCamera()),
                                  content_type='multipart/x-mixed-replace; boundary=frame')
 
+def webcam_feed_manual(request):
+    return StreamingHttpResponse(gen_manual(VideoCamera()),
+                                 content_type='multipart/x-mixed-replace; boundary=frame')
 
 # def thermal_feed(request):
 #     return StreamingHttpResponse(gen(ThermalCamera()),
@@ -81,11 +91,25 @@ def indexscreen(request):
     template = "stream.html"
     return render(request, template, context)
 
+def indexscreen_manual(request):
+    temperatures = getTemperature()
+    context = {
+        'temperatures': temperatures
+    }
+    template = "stream_manual.html"
+    return render(request, template, context)
+
 
 @gzip.gzip_page
 def dynamic_stream(request, stream_path="video"):
     try:
         return StreamingHttpResponse(get_frame(), content_type="multipart/x-mixed-replace;boundary=frame")
+    except:
+        return "error"
+
+def dynamic_stream_manual(request, stream_path="video"):
+    try:
+        return StreamingHttpResponse(get_frame_manual(), content_type="multipart/x-mixed-replace;boundary=frame")
     except:
         return "error"
 
@@ -126,7 +150,7 @@ def photos_history(request):
     if stop > items:
         stop = items
 
-    photos2 = photos[start:stop]
+    photos2 = photos[start:stop - 4]
     # thermos = Thermo.objects.all()[start:stop]
     # temperatures = Temperature.objects.all()[start:stop]
 

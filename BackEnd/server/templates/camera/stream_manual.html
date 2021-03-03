@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Live</title>
+</head>
+
+<body>
+    <h1>Video Live Streaming</h1>
+    <h3>Po rozpoznaniu twarzy system robi zdjęcia i zapisuje je do bazy</h3>
+    Temperatures:
+    {% for temp in temperatures %}
+    {{temp}} °C &nbsp;&nbsp;
+    {% endfor %}
+    <br>
+    <img src="{% url 'webcam_feed_manual' %}">
+    <br>
+    <!-- <img src="{% url 'videostream' stream_path='video' %}"> -->
+
+
+    <br>
+    <a href="{% url 'index' %}">
+        <button>BACK TO HOME</button>
+    </a>
+
+</body>
+
+</html>

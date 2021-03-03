@@ -11,6 +11,7 @@ from .thermoSnapshot import thermo
 
 
 def save_image(image):
+
     now = datetime.datetime.now()
     today = datetime.date.today()
     today = today.strftime("%d-%m-%Y_")
@@ -26,15 +27,19 @@ def save_image(image):
     photo.name = file_name
     photo.image = file_name + file_format
     photo.save()
-
+    print("Photo stored in database")
     thermo(file_path, 'thermo' + file_name, file_format)
     save_temperature()
+    print("Temperature stored")
 
-    print('Photo taken at [' + photo.date_taken + ']')
+    # print('Photo taken at [' + photo.date_taken + ']')
 
 
 def save_temperature():
-    t = getTemperature()
+    try:
+        t = getTemperature()
+    except:
+         t = [0.0, 0.0]
 
     temperature = Temperature()
     temperature.temperature1 = t[0]

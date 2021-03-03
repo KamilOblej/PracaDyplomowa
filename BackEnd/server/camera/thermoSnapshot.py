@@ -12,10 +12,10 @@ def thermo(path, file_name, format):
 
     with Lepton() as l:
         a, _ = l.capture()
-
+    print(a)
     cv2.normalize(a, a, 0, 65535, cv2.NORM_MINMAX)  # extend contrast
     np.right_shift(a, 8, a)  # fit data into 8 bits
-
+    
     cv2.imwrite(path + file_name + format, np.uint8(a)) 
     thermo = Thermo()
     thermo.name = file_name
