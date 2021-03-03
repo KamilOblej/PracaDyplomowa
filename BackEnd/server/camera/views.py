@@ -150,7 +150,7 @@ def photos_history(request):
     if stop > items:
         stop = items
 
-    photos2 = photos[start:stop - 4]
+    photos2 = photos[start:stop]
     # thermos = Thermo.objects.all()[start:stop]
     # temperatures = Temperature.objects.all()[start:stop]
 
