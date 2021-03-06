@@ -49,6 +49,7 @@ class GetData(generics.GenericAPIView):
 
 class GetDataByDate(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
+
         photo_filter = PhotosFilter(request.GET, queryset=Photo.objects.all())
         photos = photo_filter.qs
 
@@ -62,6 +63,8 @@ class GetDataByDate(generics.GenericAPIView):
         thermo_serializer = ThermoSerializer(thermos, many=True)
         temperature_serializer = TemperatureSerializer(temperatures, many=True)
 
+    
+        
         data ={
             "photos" : photos_serializer.data,
             "thermos" : thermo_serializer.data,
