@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from camera.filters import PhotosFilter, ThermosFilter, TemperaturesFilter
 
 #Register API
 class RegisterApi(generics.GenericAPIView):
@@ -45,3 +46,26 @@ class GetData(generics.GenericAPIView):
             "temperatures" : temperatures_serializer.data,
         }
         return Response(data)
+
+class GetDataByDate(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        photo_filter = PhotosFilter(request.GET, queryset=Photo.objects.all())
+        photos = photo_filter.qs
+
+        thermo_filter = ThermosFilter(request.GET, queryset=Thermo.objects.all())
+        thermos = thermo_filter.qs
+
+        temperature_filter = TemperaturesFilter(request.GET, queryset=Temperature.objects.all())
+        temperatures = temperature_filter.qs
+
+        photos_serializer = PhotoSerializer(photos, many=True)
+        thermo_serializer = ThermoSerializer(thermos, many=True)
+        temperature_serializer = TemperatureSerializer(temperatures, many=True)
+
+        data ={
+            "photos" : photos_serializer.data,
+            "thermos" : thermo_serializer.data,
+            "temperatures" : temperature_serializer.data,
+        }
+        return Response(data)
+        
