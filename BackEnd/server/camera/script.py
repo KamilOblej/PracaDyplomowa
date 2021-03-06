@@ -7,11 +7,12 @@ import copy
 import numpy as np
 from . models import Photo, Temperature
 from . getTemperature import getTemperature
-from .thermoSnapshot import thermo
+from .thermoSnapshot import thermo, thermo_save
 
 
 def save_image(image):
-
+    a = thermo()
+    print("Thermo stored in database " + str(datetime.datetime.now()))
     now = datetime.datetime.now()
     today = datetime.date.today()
     today = today.strftime("%d-%m-%Y_")
@@ -21,27 +22,28 @@ def save_image(image):
     file_name = ''+today + current_time
     pathPhoto = file_path + file_name + file_format
 
-    cv2.imwrite(pathPhoto, image)
-
     photo = Photo()
     photo.name = file_name
     photo.image = file_name + file_format
     photo.save()
-    print("Photo stored in database")
-    thermo(file_path, 'thermo' + file_name, file_format)
+    print("Photo stored in database " + str(datetime.datetime.now()))
+    thermo_save(file_path, 'thermo' + file_name, file_format,a)
+    cv2.imwrite(pathPhoto, image)
     save_temperature()
-    print("Temperature stored")
+    print("Temperature stored " + str(datetime.datetime.now()))
+    print("Waiting 5s")
+    print("--------------------------------\n")
 
     # print('Photo taken at [' + photo.date_taken + ']')
 
 
 def save_temperature():
+    temperature = Temperature()
     try:
         t = getTemperature()
     except:
-         t = [0.0, 0.0]
+        t = [0.0, 0.0]
 
-    temperature = Temperature()
     temperature.temperature1 = t[0]
     temperature.temperature2 = t[1]
     temperature.save()

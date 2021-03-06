@@ -22,6 +22,6 @@ class VideoCamera(object):
     def get_frame_manual(self):
         success, image = self.video.read()
         save_image(image)
-        sleep(10)
+        sleep(5)
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()

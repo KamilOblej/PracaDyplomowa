@@ -120,15 +120,18 @@ def history_first(request):
 def photos_history(request):
 
 
-    photos = Photo.objects.all()
-    items = photos.count()
+    # photos = Photo.objects.all()
+    # items = photos.count()
+
     # temperatures = Temperature.objects.all()
     title = 'Photos from database:'
     message = ''
 
-    my_filter = PhotosFilter(request.GET, queryset=photos)
+    # my_filter = PhotosFilter(request.GET, queryset=photos)
+    my_filter = PhotosFilter(request.GET, queryset=Photo.objects.all())
     photos = my_filter.qs
     # print(photos.count())
+    items = Photo.objects.all().count()
 
     offset = 30
     
@@ -151,8 +154,6 @@ def photos_history(request):
         stop = items
 
     photos2 = photos[start:stop]
-    # thermos = Thermo.objects.all()[start:stop]
-    # temperatures = Temperature.objects.all()[start:stop]
 
     data_set = []
 
@@ -169,16 +170,7 @@ def photos_history(request):
         message = 'No data for this date period'
     else:
         message =  str(photos.count()) + ' elements found'
-    
-    # for i in range(0,offset):
-    #     # print (photos[i].name, thermos[i].name,)
-    #     data = {
-    #         'photo' : photos[i],
-    #         # 'thermo' : thermos[i],
-    #         # 'temperature' : temperatures[i],
-            
-    #     }
-    #     data_set.append(data)
+
     
     pages = []
 
