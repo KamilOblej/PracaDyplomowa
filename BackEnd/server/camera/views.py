@@ -84,12 +84,15 @@ def webcam_feed_manual(request):
 
 
 def indexscreen(request):
-    temperatures = getTemperature()
-    context = {
-        'temperatures': temperatures
-    }
-    template = "stream.html"
-    return render(request, template, context)
+    if request.user.is_authenticated:
+        temperatures = getTemperature()
+        context = {
+            'temperatures': temperatures
+        }
+        template = "stream.html"
+        return render(request, template, context)
+    else:
+        return redirect('http://82.145.73.141')
 
 def indexscreen_manual(request):
     temperatures = getTemperature()

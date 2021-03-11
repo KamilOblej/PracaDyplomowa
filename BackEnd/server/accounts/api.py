@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from camera.filters import PhotosFilter, ThermosFilter, TemperaturesFilter
+from django.contrib.auth.decorators import login_required
 
 #Register API
 class RegisterApi(generics.GenericAPIView):
@@ -30,21 +31,27 @@ class SimpleApI(APIView):
 
 class GetData(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
-        print(request.user)
-        photos = Photo.objects.all()
-        photos_serializer = PhotoSerializer(photos, many=True)
+        data = {}
+        if request.user.is_authenticated:
+            print(request.user)
+            photos = Photo.objects.all()
+            photos_serializer = PhotoSerializer(photos, many=True)
 
-        thermos = Thermo.objects.all()
-        thermos_serializer = ThermoSerializer(thermos, many=True)
+            thermos = Thermo.objects.all()
+            thermos_serializer = ThermoSerializer(thermos, many=True)
 
-        temperatures = Temperature.objects.all()
-        temperatures_serializer = TemperatureSerializer(temperatures, many=True)
+            temperatures = Temperature.objects.all()
+            temperatures_serializer = TemperatureSerializer(temperatures, many=True)
 
-        data = {
-            "photos" : photos_serializer.data,
-            "thermos" : thermos_serializer.data,
-            "temperatures" : temperatures_serializer.data,
-        }
+            data = {
+                "photos" : photos_serializer.data,
+                "thermos" : thermos_serializer.data,
+                "temperatures" : temperatures_serializer.data,
+            }
+        else:
+            data = {
+                "message" : 'user is not logged in!'
+            }
         return Response(data)
 
 class GetDataByDate(generics.GenericAPIView):
