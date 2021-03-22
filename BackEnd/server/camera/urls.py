@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls import url
 
 from . import views
@@ -14,5 +14,6 @@ urlpatterns = [
     # path('thermal_feed', views.thermal_feed, name='thermal_feed'),
     path('got_to_history/', views.history_first, name='history_first'),
     url(r'^history/$',views.photos_history, name='history'),
+    path('processing/', views.go_to_processing, name='processing')
     # path('history/',views.photos_history, name='history'),
 ]

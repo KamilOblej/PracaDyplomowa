@@ -196,3 +196,5 @@ def photos_history(request):
 
 
 
+def go_to_processing(request):
+    return redirect('http://82.145.73.141:8000/processing/main')

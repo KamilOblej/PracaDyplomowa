@@ -12,6 +12,7 @@ from server.settings import MEDIA_ROOT
 
 
 def save_image(image):
+
     a = thermo()
     # print("Thermo stored in database " + str(datetime.datetime.now()))
     now = datetime.datetime.now()
@@ -28,8 +29,8 @@ def save_image(image):
     photo.image = file_name + file_format
     
     # print("Photo stored in database " + str(datetime.datetime.now()))
-    print(pathPhoto)
-    print(cv2.imwrite(pathPhoto, image))
+    # print(pathPhoto)
+    # print(cv2.imwrite(pathPhoto, image))
     if(cv2.imwrite(pathPhoto, image)):
         print('Photo saved successfully')
         thermo_save(file_path, 'thermo' + file_name, file_format,a)

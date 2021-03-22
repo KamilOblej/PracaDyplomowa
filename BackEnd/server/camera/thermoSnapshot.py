@@ -13,7 +13,7 @@ def thermo(path, file_name, format):
 
     with Lepton() as l:
         a, _ = l.capture()
-    print(a)
+    # print(a)
     cv2.normalize(a, a, 0, 65535, cv2.NORM_MINMAX)  # extend contrast
     np.right_shift(a, 8, a)  # fit data into 8 bits
     
@@ -32,8 +32,9 @@ def thermo():
 
 def thermo_save(path, file_name, format, matrix):
     a = matrix
-    mat = np.asarray(a)
-    # print(mat)
+    matrix = np.array(a)
+    np.set_printoptions(threshold=np.inf, linewidth=80)
+    print(matrix)
 
     cv2.normalize(a, a, 0, 65535, cv2.NORM_MINMAX)  # extend contrast
     np.right_shift(a, 8, a)  # fit data into 8 bits

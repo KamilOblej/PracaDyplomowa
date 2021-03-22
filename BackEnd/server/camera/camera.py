@@ -16,6 +16,7 @@ class VideoCamera(object):
     def get_frame(self):
         success, image = self.video.read()
         try:
+            
             face_recognition(image)
         except:
             print('error')
